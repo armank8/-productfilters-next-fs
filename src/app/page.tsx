@@ -5,7 +5,8 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { ChevronDown, Filter } from "lucide-react";
 import { useState } from "react";
 
 const SORT_OPTIONS = [
@@ -37,7 +38,10 @@ export default function Home() {
               {SORT_OPTIONS.map((option) => (
                 <button
                   key={option.name}
-                  className=""
+                  className={cn("text-left w-full block px-4 py-2 text-sm", {
+                    "text-gray-900 bg-gray-100": option.value === filter.sort,
+                    "text-gray-500": option.value !== filter.sort,
+                  })}
                   onClick={() => {
                     setFilter((prev) => ({
                       ...prev,
@@ -50,6 +54,13 @@ export default function Home() {
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
+
+          <button
+            className="-m-2 ml-4 p-2 text-gray-400 hover:text-gray-500
+           sm:ml-6 lg:hidden"
+          >
+            <Filter className="h-5 w-5" />
+          </button>
         </div>
       </div>
     </main>
