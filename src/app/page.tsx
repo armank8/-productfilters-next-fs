@@ -11,7 +11,8 @@ import { ChevronDown, Filter } from "lucide-react";
 import { useState } from "react";
 import axios from "axios";
 import { QueryResult } from "@upstash/vector";
-import { Product } from "@/db";
+import type { Product as TProduct  } from "@/db";
+import Product from "@/components/Products/Product";
 
 const SORT_OPTIONS = [
   { name: "None", value: "none" },
@@ -28,7 +29,7 @@ export default function Home() {
   const { data: products } = useQuery({
     queryKey: ["products", filter],
     queryFn: async () => {
-      const { data } = await axios.post<QueryResult<Product>[]>(
+      const { data } = await axios.post<QueryResult<TProduct>[]>(
         "http://localhost:3000/api/products",
         {
           filter: {
@@ -91,9 +92,11 @@ export default function Home() {
 
           {/* Products grid */}
           <ul className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-            {/* {
-              products?.map(()=>())
-            } */}
+            {
+              products?.map((product)=>(
+                <Product product={product.metadata!} key={product.id}></Product>
+              ))
+            }
           </ul>
         </div>
       </section>
